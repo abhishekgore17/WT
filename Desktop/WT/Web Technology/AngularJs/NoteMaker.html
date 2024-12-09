@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Maker</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .note {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .note h4 {
+            margin: 0 0 5px;
+        }
+        .note button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .note button:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body ng-app="notesApp" ng-controller="notesCtrl">
+    <h1>Notes Maker</h1>
+    
+    <div>
+        <input type="text" ng-model="newNote.title" placeholder="Note Title" />
+        <textarea ng-model="newNote.content" placeholder="Note Content"></textarea>
+        <button ng-click="addNote()">Add Note</button>
+    </div>
+
+    <h2>Notes</h2>
+    <div ng-if="notes.length === 0">No notes available. Add a new note!</div>
+    <div class="note" ng-repeat="note in notes">
+        <h4>{{ note.title }}</h4>
+        <p>{{ note.content }}</p>
+        <button ng-click="deleteNote($index)">Delete</button>
+    </div>
+
+    <script>
+        const app = angular.module('notesApp', []);
+
+        app.controller('notesCtrl', function($scope) {
+            $scope.notes = [];
+            $scope.newNote = {};
+
+            $scope.addNote = function() {
+                if ($scope.newNote.title && $scope.newNote.content) {
+                    $scope.notes.push($scope.newNote);
+                    $scope.newNote = {};
+                } else {
+                    alert('Both title and content are required!');
+                }
+            };
+
+            $scope.deleteNote = function(index) {
+                $scope.notes.splice(index, 1);
+            };
+        });
+    </script>
+</body>
+</html>
